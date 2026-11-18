@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PaperDesk - Tasks, Budget & Diet Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="paper-theme">
+  <div class="app-layout">
+
+    <!-- ========================================================
+         VIEW 1: LOGIN & REGISTER PAGE (Notebook Cover / Journal Card)
+         ======================================================== -->
+    <section id="login-view" class="view-panel active">
+      <div class="paper-sheet login-sheet">
+        <div class="tape-strip top-center"></div>
+
+        <div class="notebook-stamp">PERSONAL DESK</div>
+
+        <div class="sheet-header text-center">
+          <div class="journal-cover-emblem">📖</div>
+          <div class="handwritten-title">My Journal</div>
+          <p class="sheet-subtitle">Sign in or register to manage your personal workspace</p>
+        </div>
+
+        <!-- Auth Tabs: Sign In vs Register -->
+        <div class="auth-toggle-bar">
+          <button type="button" class="auth-toggle-btn active" id="auth-tab-signin">
+            <span>🔑 Sign In</span>
+          </button>
+          <button type="button" class="auth-toggle-btn" id="auth-tab-signup">
+            <span>✍️ Register (New User)</span>
+          </button>
+        </div>
+
+        <!-- FORM 1: SIGN IN -->
+        <div id="signin-container" class="auth-form-container active">
+          <form id="login-form" class="paper-form">
+            <div class="paper-input-group">
+              <label for="username">Email</label>
+              <div class="field-line">
+                <span class="field-icon">👤</span>
+                <input type="text" id="username" placeholder="alex@paperdesk.com" value="alex@paperdesk.com" required
+                  autocomplete="username">
+              </div>
+            </div>
+
+            <div class="paper-input-group">
+              <div class="label-split">
+                <label for="password">Secret Password</label>
+                <a href="#" class="ink-link" id="forgot-pwd-link"
+                  onclick="event.preventDefault(); alert('Demo mode: Credentials pre-filled below, or register a new user!')">Forgot?</a>
+              </div>
+              <div class="field-line password-line">
+                <span class="field-icon">🔑</span>
+                <input type="password" id="password" placeholder="••••••••" value="paper123" required
+                  autocomplete="current-password">
+                <button type="button" class="ink-btn-icon" id="toggle-pwd-btn" aria-label="Toggle password"
+                  title="Show / Hide password">👁️</button>
+              </div>
+            </div>
+
+            <div class="form-check-line">
+              <label class="paper-checkbox-label">
+                <input type="checkbox" id="remember-me" checked>
+                <span>Keep notebook open (Remember me)</span>
+              </label>
+            </div>
+
+            <button type="submit" class="paper-btn stamp-btn-primary btn-block" id="login-submit-btn">
+              <span>Open My Journal</span>
+              <span class="arrow-symbol">→</span>
+            </button>
+          </form>
+
+          <div class="auth-helper-note">
+            <span>New user?</span>
+            <button type="button" class="inline-switch-btn" id="link-to-register">Please register your account first
+              →</button>
+          </div>
+
+          <div class="sticky-note-hint" id="demo-fill-btn" style="cursor: pointer;"
+            title="Tap to auto-fill demo credentials">
+            📌 <em>Demo Note: Credentials pre-filled! Simply tap <strong>Open My Journal</strong>.</em>
+          </div>
+        </div>
+
+        <!-- FORM 2: REGISTER (NEW USER) -->
+        <div id="signup-container" class="auth-form-container">
+          <form id="register-form" class="paper-form">
+            <div class="paper-input-group">
+              <label for="reg-name">Your Full Name *</label>
+              <div class="field-line">
+                <span class="field-icon">✍️</span>
+                <input type="text" id="reg-name" placeholder="e.g. Michael Scott" required maxlength="50"
+                  autocomplete="name">
+              </div>
+            </div>
+
+            <div class="paper-input-group">
+              <label for="reg-email">Email Address *</label>
+              <div class="field-line">
+                <span class="field-icon">✉️</span>
+                <input type="email" id="reg-email" placeholder="e.g. michael@paperdesk.com" required
+                  autocomplete="email">
+              </div>
+            </div>
+
+            <div class="paper-input-group">
+              <label for="reg-password">Create Secret Password *</label>
+              <div class="field-line password-line">
+                <span class="field-icon">🔒</span>
+                <input type="password" id="reg-password" placeholder="Choose a strong password" required minlength="4"
+                  autocomplete="new-password">
+                <button type="button" class="ink-btn-icon" id="toggle-reg-pwd-btn" aria-label="Toggle password"
+                  title="Show / Hide password">👁️</button>
+              </div>
+            </div>
+
+            <div class="paper-notice-box">
+              <span>📝 We'll save your email, password, and name, and create your personalized paper desk.</span>
+            </div>
+
+            <button type="submit" class="paper-btn stamp-btn-green btn-block" id="register-submit-btn">
+              <span>Create Account & Open Desk</span>
+              <span class="arrow-symbol">→</span>
+            </button>
+          </form>
+
+          <div class="auth-helper-note">
+            <span>Already have an account?</span>
+            <button type="button" class="inline-switch-btn" id="link-to-signin">Sign In here →</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         VIEW 2: WORKSPACE (Main App with Paper Tabs & Desk)
+         ======================================================== -->
+    <section id="workspace-view" class="view-panel">
+
+      <!-- Top Paper Desk Bar -->
+      <header class="desk-header">
+        <div class="desk-header-container">
+          <div class="journal-branding">
+            <span class="binder-clip">📎</span>
+            <div>
+              <h1 class="desk-title" id="desk-title-text"><span id="user-display-name">Alex</span>'s Paper Desk</h1>
+              <span class="desk-date-stamp" id="current-date-stamp">Nov 18, 2026</span>
+            </div>
+          </div>
+
+          <!-- Sticky Navigation Tabs -->
+          <nav class="paper-tabs-nav" aria-label="Main Navigation">
+            <button class="notebook-tab tab-hub active" data-target="hub-view">
+              <span class="tab-pin">📌</span> Desk Hub
+            </button>
+            <button class="notebook-tab tab-tasks" data-target="taskmaster-view">
+              <span class="tab-pin">📋</span> TaskMaster
+            </button>
+            <button class="notebook-tab tab-budget" data-target="budget-view">
+              <span class="tab-pin">💰</span> Budget Dealer
+            </button>
+            <button class="notebook-tab tab-diet" data-target="diet-view">
+              <span class="tab-pin">🥗</span> Diet Helper
+            </button>
+          </nav>
+
+          <!-- User controls -->
+          <div class="desk-user-box">
+            <span class="ink-avatar" id="user-avatar">A</span>
+            <button class="paper-btn btn-sm btn-outline" id="logout-btn" title="Close and Lock Journal">
+              Lock Desk 🔒
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Desk Surface -->
+      <main class="desk-surface">
+        <div class="desk-content-wrapper">
+
+          <!-- ==============================================
+               SUB-VIEW A: DESK HUB (Go-to Page / Card Switcher)
+               ============================================== -->
+          <div id="hub-view" class="app-subview active">
+            <div class="hub-welcome-banner paper-sheet">
+              <div class="tape-strip top-left"></div>
+              <div class="handwritten-title large">Welcome back, <span id="hub-user-name">Alex</span>! ✍️</div>
+              <p class="lead-text">Choose a notebook section below to start organizing your day, balancing finances, or
+                logging meals.</p>
+            </div>
+
+            <div class="hub-cards-grid">
+              <!-- Card 1: TaskMaster -->
+              <div class="hub-card paper-sheet task-card-theme" onclick="navigateToSection('taskmaster-view')">
+                <div class="stamp-tag">ORGANIZER</div>
+                <div class="card-icon">📋</div>
+                <h2>TaskMaster</h2>
+                <p>Track your to-do items, organize by priority, and search through daily tasks.</p>
+                <div class="card-stats" id="hub-task-stat">0 pending tasks</div>
+                <button class="paper-btn stamp-btn-primary card-action-btn">
+                  Open Tasks →
+                </button>
+              </div>
+
+              <!-- Card 2: Budget Dealer -->
+              <div class="hub-card paper-sheet budget-card-theme" onclick="navigateToSection('budget-view')">
+                <div class="stamp-tag green">FINANCE</div>
+                <div class="card-icon">💰</div>
+                <h2>Budget Dealer</h2>
+                <p>Record your incomes and daily expenses, monitor savings, and search transactions.</p>
+                <div class="card-stats" id="hub-budget-stat">Money Left: ₹0.00</div>
+                <button class="paper-btn stamp-btn-green card-action-btn">
+                  Open Ledger →
+                </button>
+              </div>
+
+              <!-- Card 3: Diet Helper -->
+              <div class="hub-card paper-sheet diet-card-theme" onclick="navigateToSection('diet-view')">
+                <div class="stamp-tag orange">HEALTH</div>
+                <div class="card-icon">🥗</div>
+                <h2>Diet Helper</h2>
+                <p>Log your meals (breakfast, lunch, dinner, snacks), count calories, and track water intake.</p>
+                <div class="card-stats" id="hub-diet-stat">0 kcal logged today</div>
+                <button class="paper-btn stamp-btn-orange card-action-btn">
+                  Open Diet Log →
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ==============================================
+               SUB-VIEW B: TASKMASTER APP
+               ============================================== -->
+          <div id="taskmaster-view" class="app-subview">
+            <div class="paper-sheet section-sheet">
+              <div class="sheet-top-row">
+                <div>
+                  <div class="handwritten-title">TaskMaster Journal 📋</div>
+                  <p class="sheet-desc">Stay on top of your priorities, errands, and project deadlines.</p>
+                </div>
+                <button class="paper-btn stamp-btn-primary" id="open-add-task-btn">
+                  + Add Task
+                </button>
+              </div>
+
+              <!-- Search Bar & Controls -->
+              <div class="paper-search-row">
+                <div class="paper-search-box">
+                  <span class="search-symbol">🔍</span>
+                  <input type="text" id="task-search-input" placeholder="Search tasks by title, category, or notes..."
+                    autocomplete="off">
+                  <button class="clear-search-btn" id="task-search-clear" title="Clear search">✕</button>
+                </div>
+
+                <div class="paper-filter-group">
+                  <button class="filter-chip active" data-filter="all">All (<span id="count-all">0</span>)</button>
+                  <button class="filter-chip" data-filter="pending">Pending (<span id="count-pending">0</span>)</button>
+                  <button class="filter-chip" data-filter="completed">Done (<span
+                      id="count-completed">0</span>)</button>
+                </div>
+              </div>
+
+              <!-- Task List Area -->
+              <div class="ruled-paper-content">
+                <!-- Empty State (When no tasks added) -->
+                <div id="task-empty-state" class="paper-empty-box">
+                  <div class="empty-doodle">📝</div>
+                  <h3>No tasks added yet!</h3>
+                  <p>Your task list is completely clean. Click the button below to add your first task.</p>
+                  <button class="paper-btn stamp-btn-primary" id="empty-add-task-btn">
+                    + Add Task
+                  </button>
+                </div>
+
+                <!-- No Search Results -->
+                <div id="task-no-results" class="paper-empty-box" style="display: none;">
+                  <div class="empty-doodle">🔎</div>
+                  <h4>No matching tasks found</h4>
+                  <p>Try searching with another word or reset your search query.</p>
+                  <button class="paper-btn btn-sm btn-outline" id="task-reset-search-btn">Reset Search</button>
+                </div>
+
+                <!-- Active Tasks -->
+                <ul id="task-list" class="notebook-task-list"></ul>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ==============================================
+               SUB-VIEW C: BUDGET DEALER APP
+               ============================================== -->
+          <div id="budget-view" class="app-subview">
+            <div class="paper-sheet section-sheet">
+              <div class="sheet-top-row">
+                <div>
+                  <div class="handwritten-title">Budget Dealer 💰</div>
+                  <p class="sheet-desc">Track salary, calculate common monthly expenses, and monitor money left.</p>
+                </div>
+                <div class="action-btn-group">
+                  <button class="paper-btn stamp-btn-green" id="open-add-common-btn">
+                    + Add Common Expense
+                  </button>
+                  <button class="paper-btn stamp-btn-primary" id="open-add-transaction-btn">
+                    + Add Daily Expense
+                  </button>
+                </div>
+              </div>
+
+              <!-- Monthly Salary Setting Banner -->
+              <div class="salary-control-sheet paper-card-subtle">
+                <div class="salary-header-row">
+                  <div class="salary-info">
+                    <span class="stamp-tag green">MONTHLY REVENUE</span>
+                    <h3 class="salary-heading">💼 Your Monthly Salary</h3>
+                    <p class="salary-sub">Set your baseline take-home salary to calculate your leftover money.</p>
+                  </div>
+                  <div class="salary-input-container">
+                    <label for="monthly-salary-input">Monthly Take-Home Salary (₹):</label>
+                    <div class="salary-input-group">
+                      <span class="currency-prefix">₹</span>
+                      <input type="number" id="monthly-salary-input" placeholder="4000" min="0" step="50" value="4000">
+                      <button class="paper-btn btn-sm stamp-btn-green" id="save-salary-btn">Update Salary</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Budget Summary Scorecards -->
+              <div class="budget-summary-grid">
+                <div class="ledger-card card-salary">
+                  <span class="ledger-label">Monthly Salary</span>
+                  <span class="ledger-value font-mono text-green" id="budget-salary-val">₹4,000.00</span>
+                  <span class="ledger-sub-note">Base take-home pay</span>
+                </div>
+                <div class="ledger-card card-common-exp">
+                  <span class="ledger-label">Common Fixed Bills</span>
+                  <span class="ledger-value font-mono text-red" id="budget-common-total">-₹1,480.00</span>
+                  <span class="ledger-sub-note" id="budget-common-count">4 recurring bills</span>
+                </div>
+                <div class="ledger-card card-after-common highlight-card">
+                  <span class="ledger-label">Money Left After Common Bills</span>
+                  <span class="ledger-value font-mono text-blue" id="budget-left-after-common">₹2,520.00</span>
+                  <span class="ledger-sub-note" id="budget-left-after-common-pct">63.0% of salary free</span>
+                </div>
+                <div class="ledger-card card-daily-exp">
+                  <span class="ledger-label">Daily Expenses Logged</span>
+                  <span class="ledger-value font-mono text-red" id="budget-total-expense">-₹0.00</span>
+                  <span class="ledger-sub-note">Variable spending</span>
+                </div>
+                <div class="ledger-card card-net-balance final-card">
+                  <span class="ledger-label">Final Money Left</span>
+                  <span class="ledger-value font-mono" id="budget-net-balance">₹2,520.00</span>
+                  <span class="ledger-sub-note">Pocket money / savings</span>
+                </div>
+              </div>
+
+              <!-- SECTION 1: EVERY MONTH COMMON EXPENSES TABLE -->
+              <div class="budget-sub-block">
+                <div class="sub-block-header">
+                  <div>
+                    <h3 class="sub-block-title">📅 Every Month Common Expenses</h3>
+                    <p class="sub-block-subtitle">Your fixed monthly bills (Rent, Utilities, Subscriptions, Insurance,
+                      etc.).</p>
+                  </div>
+                  <button class="paper-btn btn-sm stamp-btn-green" id="btn-quick-add-common">
+                    + Add Common Expense
+                  </button>
+                </div>
+
+                <div class="paper-table-wrapper">
+                  <table class="paper-table" id="common-expenses-table">
+                    <thead>
+                      <tr>
+                        <th>Bill / Expense Name</th>
+                        <th>Category</th>
+                        <th class="text-right">Monthly Cost</th>
+                        <th class="text-center">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="common-expenses-tbody">
+                      <!-- Rendered dynamically via JS -->
+                    </tbody>
+                    <tfoot>
+                      <tr class="table-total-row">
+                        <td colspan="2"><strong>Total Monthly Common Expenses:</strong></td>
+                        <td class="text-right font-mono text-red"><strong id="table-total-common">-₹1,480.00</strong>
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+
+                <!-- Callout Banner: Money left every month after common expenses -->
+                <div class="common-leftover-callout">
+                  <span class="callout-icon">💡</span>
+                  <div class="callout-text">
+                    <strong>Money Left Every Month After Common Expenses: </strong>
+                    <span class="font-mono highlight-money text-green" id="callout-left-after-common">₹2,520.00</span>
+                    <span class="callout-subtext">(Salary of <span id="callout-salary-disp">₹4,000.00</span> minus <span
+                        id="callout-common-disp">₹1,480.00</span> common expenses)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 2: DAILY EXPENSES & MONEY LEFT TABLE -->
+              <div class="budget-sub-block mt-32">
+                <div class="sub-block-header">
+                  <div>
+                    <h3 class="sub-block-title">🧾 Daily Expenses Ledger (With Money Left)</h3>
+                    <p class="sub-block-subtitle">When you write an expense, the table automatically shows how much
+                      money you have left.</p>
+                  </div>
+                  <button class="paper-btn btn-sm stamp-btn-primary" id="btn-quick-add-daily">
+                    + Add Daily Expense
+                  </button>
+                </div>
+
+                <!-- Search Bar & Filters -->
+                <div class="paper-search-row">
+                  <div class="paper-search-box">
+                    <span class="search-symbol">🔍</span>
+                    <input type="text" id="budget-search-input"
+                      placeholder="Search daily expenses by description or category..." autocomplete="off">
+                    <button class="clear-search-btn" id="budget-search-clear" title="Clear">✕</button>
+                  </div>
+
+                  <div class="paper-filter-group">
+                    <button class="budget-filter-chip active" data-bfilter="all">All (<span
+                        id="bcount-all">0</span>)</button>
+                    <button class="budget-filter-chip" data-bfilter="expense">Expenses (<span
+                        id="bcount-expense">0</span>)</button>
+                    <button class="budget-filter-chip" data-bfilter="income">Other Income (<span
+                        id="bcount-income">0</span>)</button>
+                  </div>
+                </div>
+
+                <!-- Transaction Ledger Area -->
+                <div class="ruled-paper-content">
+                  <!-- Empty State -->
+                  <div id="budget-empty-state" class="paper-empty-box">
+                    <div class="empty-doodle">🧾</div>
+                    <h3>No daily expenses logged yet!</h3>
+                    <p>You have all <strong><span id="empty-left-money-disp">₹2,520.00</span></strong> left after your
+                      common expenses. Write an expense to start tracking!</p>
+                    <button class="paper-btn stamp-btn-primary" id="empty-add-trans-btn">
+                      + Add Daily Expense
+                    </button>
+                  </div>
+
+                  <!-- No Search Results -->
+                  <div id="budget-no-results" class="paper-empty-box" style="display: none;">
+                    <div class="empty-doodle">🔎</div>
+                    <h4>No matching expenses found</h4>
+                    <p>Check your keyword or reset the search filter.</p>
+                    <button class="paper-btn btn-sm btn-outline" id="budget-reset-search-btn">Reset Search</button>
+                  </div>
+
+                  <!-- Table with Money Left Column -->
+                  <div class="paper-table-wrapper" id="daily-ledger-table-wrapper">
+                    <table class="paper-table" id="daily-ledger-table">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Description / Payee</th>
+                          <th>Category</th>
+                          <th class="text-right">Expense / Income</th>
+                          <th class="text-right">Money Left</th>
+                          <th class="text-center">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="daily-ledger-tbody">
+                        <!-- Rendered dynamically via JS -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ==============================================
+               SUB-VIEW D: DIET HELPER APP
+               ============================================== -->
+          <div id="diet-view" class="app-subview">
+            <div class="paper-sheet section-sheet">
+              <div class="sheet-top-row">
+                <div>
+                  <div class="handwritten-title">Diet Helper Journal 🥗</div>
+                  <p class="sheet-desc">Keep track of your meals, daily calorie goal, and water hydration.</p>
+                </div>
+                <button class="paper-btn stamp-btn-orange" id="open-log-meal-btn">
+                  + Log Meal
+                </button>
+              </div>
+
+              <!-- Daily Calorie & Water Counters -->
+              <div class="diet-metrics-grid">
+                <!-- Calorie Tracker Card -->
+                <div class="diet-metric-card paper-card-subtle">
+                  <div class="metric-top">
+                    <span class="metric-title">🔥 Daily Calories</span>
+                    <span class="metric-cal font-mono"><strong id="total-calories-num">0</strong> / 2,000 kcal</span>
+                  </div>
+                  <div class="calorie-progress-track">
+                    <div class="calorie-progress-fill" id="calorie-progress-bar" style="width: 0%;"></div>
+                  </div>
+                  <div class="metric-sub-note" id="calorie-remaining-note">2,000 kcal remaining</div>
+                </div>
+
+                <!-- Water Tracker Card -->
+                <div class="diet-metric-card paper-card-subtle">
+                  <div class="metric-top">
+                    <span class="metric-title">💧 Hydration Log</span>
+                    <span class="water-glass-count font-mono"><strong id="water-count-num">0</strong> / 8 Glasses</span>
+                  </div>
+                  <div class="water-stepper">
+                    <button class="paper-btn btn-sm btn-outline" id="water-minus-btn" title="Remove glass">− 1
+                      Glass</button>
+                    <div class="glasses-visual" id="glasses-visual-icons">💧 💧 💧 💧 💧 💧 💧 💧</div>
+                    <button class="paper-btn btn-sm stamp-btn-primary" id="water-plus-btn" title="Add glass">+ 1
+                      Glass</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search Bar & Meal Type Filters -->
+              <div class="paper-search-row">
+                <div class="paper-search-box">
+                  <span class="search-symbol">🔍</span>
+                  <input type="text" id="diet-search-input" placeholder="Search meals (e.g. Oatmeal, Salad, Chicken)..."
+                    autocomplete="off">
+                  <button class="clear-search-btn" id="diet-search-clear" title="Clear">✕</button>
+                </div>
+
+                <div class="paper-filter-group">
+                  <button class="diet-filter-chip active" data-dfilter="all">All Meals (<span
+                      id="dcount-all">0</span>)</button>
+                  <button class="diet-filter-chip" data-dfilter="Breakfast">Breakfast</button>
+                  <button class="diet-filter-chip" data-dfilter="Lunch">Lunch</button>
+                  <button class="diet-filter-chip" data-dfilter="Dinner">Dinner</button>
+                  <button class="diet-filter-chip" data-dfilter="Snack">Snacks</button>
+                </div>
+              </div>
+
+              <!-- Meal Log Content -->
+              <div class="ruled-paper-content">
+                <!-- Empty State -->
+                <div id="diet-empty-state" class="paper-empty-box">
+                  <div class="empty-doodle">🍎</div>
+                  <h3>No meals logged today!</h3>
+                  <p>You haven't added any meals yet. Track your breakfast, lunch, dinner or snack below.</p>
+                  <button class="paper-btn stamp-btn-orange" id="empty-add-meal-btn">
+                    + Log Meal
+                  </button>
+                </div>
+
+                <!-- No Search Results -->
+                <div id="diet-no-results" class="paper-empty-box" style="display: none;">
+                  <div class="empty-doodle">🔎</div>
+                  <h4>No matching meals found</h4>
+                  <p>Try searching for a different food or reset your search filter.</p>
+                  <button class="paper-btn btn-sm btn-outline" id="diet-reset-search-btn">Reset Search</button>
+                </div>
+
+                <!-- Meals List -->
+                <ul id="diet-meals-list" class="notebook-meal-list"></ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </section>
+
+
+    <!-- ========================================================
+         MODAL 1: ADD TASK (TASKMASTER)
+         ======================================================== -->
+    <div id="task-modal" class="paper-modal-backdrop">
+      <div class="paper-modal-sheet">
+        <div class="tape-strip top-center"></div>
+        <div class="modal-header">
+          <h3 class="handwritten-title">New Task Note 📌</h3>
+          <button class="modal-close-ink" id="task-modal-close">&times;</button>
+        </div>
+        <form id="task-form" class="paper-form">
+          <div class="paper-input-group">
+            <label for="task-title-input">Task Title *</label>
+            <div class="field-line">
+              <input type="text" id="task-title-input" placeholder="e.g. Finish client presentation" required
+                maxlength="120">
+            </div>
+          </div>
+
+          <div class="paper-input-group">
+            <label for="task-desc-input">Notes / Details</label>
+            <textarea id="task-desc-input" rows="3" placeholder="Add extra steps, links, or notes..."></textarea>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="paper-input-group">
+              <label for="task-category-input">Category</label>
+              <select id="task-category-input">
+                <option value="Work">💼 Work</option>
+                <option value="Personal">🏡 Personal</option>
+                <option value="Urgent">🔥 Urgent</option>
+                <option value="Study">📚 Study</option>
+                <option value="Errands">🛒 Errands</option>
+              </select>
+            </div>
+
+            <div class="paper-input-group">
+              <label for="task-priority-input">Priority</label>
+              <select id="task-priority-input">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="paper-input-group">
+            <label for="task-due-date">Target Due Date</label>
+            <div class="field-line">
+              <input type="date" id="task-due-date">
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="paper-btn btn-outline" id="task-modal-cancel">Cancel</button>
+            <button type="submit" class="paper-btn stamp-btn-primary">Save to Tasks</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <!-- ========================================================
+         MODAL 2: ADD TRANSACTION (BUDGET DEALER)
+         ======================================================== -->
+    <div id="budget-modal" class="paper-modal-backdrop">
+      <div class="paper-modal-sheet">
+        <div class="tape-strip top-center"></div>
+        <div class="modal-header">
+          <h3 class="handwritten-title">New Daily Ledger Entry 💰</h3>
+          <button class="modal-close-ink" id="budget-modal-close">&times;</button>
+        </div>
+        <form id="budget-form" class="paper-form">
+          <div class="paper-input-group">
+            <label for="trans-title-input">Description / Payee *</label>
+            <div class="field-line">
+              <input type="text" id="trans-title-input" placeholder="e.g. Grocery Store, Client Payment" required
+                maxlength="100">
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="paper-input-group">
+              <label for="trans-type-input">Type</label>
+              <select id="trans-type-input">
+                <option value="expense" selected>Expense (Outgoing −)</option>
+                <option value="income">Other Income (Incoming +)</option>
+              </select>
+            </div>
+
+            <div class="paper-input-group">
+              <label for="trans-amount-input">Amount (₹) *</label>
+              <div class="field-line">
+                <input type="number" id="trans-amount-input" step="0.01" min="0.01" placeholder="45.50" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="paper-input-group">
+              <label for="trans-category-input">Category</label>
+              <select id="trans-category-input">
+                <option value="Food & Dining">🍔 Food & Dining</option>
+                <option value="Shopping">🛍️ Shopping</option>
+                <option value="Transport">🚗 Gas & Transport</option>
+                <option value="Entertainment">🎬 Entertainment</option>
+                <option value="Health & Medical">💊 Health & Medical</option>
+                <option value="Freelance">💻 Freelance / Bonus</option>
+                <option value="General">🏷️ General</option>
+              </select>
+            </div>
+
+            <div class="paper-input-group">
+              <label for="trans-date-input">Date</label>
+              <div class="field-line">
+                <input type="date" id="trans-date-input">
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="paper-btn btn-outline" id="budget-modal-cancel">Cancel</button>
+            <button type="submit" class="paper-btn stamp-btn-primary">Record Expense</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL 2B: ADD COMMON MONTHLY EXPENSE
+         ======================================================== -->
+    <div id="common-expense-modal" class="paper-modal-backdrop">
+      <div class="paper-modal-sheet">
+        <div class="tape-strip top-center"></div>
+        <div class="modal-header">
+          <h3 class="handwritten-title">New Common Monthly Bill 📅</h3>
+          <button class="modal-close-ink" id="common-modal-close">&times;</button>
+        </div>
+        <form id="common-expense-form" class="paper-form">
+          <div class="paper-input-group">
+            <label for="common-name-input">Bill or Expense Name *</label>
+            <div class="field-line">
+              <input type="text" id="common-name-input" placeholder="e.g. Apartment Rent, Electricity, Internet"
+                required maxlength="100">
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="paper-input-group">
+              <label for="common-category-input">Category</label>
+              <select id="common-category-input">
+                <option value="Housing">🏠 Housing / Rent</option>
+                <option value="Utilities">⚡ Utilities</option>
+                <option value="Subscriptions">📱 Subscriptions / Wi-Fi</option>
+                <option value="Insurance">🛡️ Insurance</option>
+                <option value="Transport">🚗 Car & Transport</option>
+                <option value="Health">🧘 Health & Fitness</option>
+                <option value="Other">🏷️ Other Fixed Bill</option>
+              </select>
+            </div>
+
+            <div class="paper-input-group">
+              <label for="common-amount-input">Monthly Cost (₹) *</label>
+              <div class="field-line">
+                <input type="number" id="common-amount-input" step="0.01" min="0.01" placeholder="150.00" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="paper-btn btn-outline" id="common-modal-cancel">Cancel</button>
+            <button type="submit" class="paper-btn stamp-btn-green">Add Common Bill</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <!-- ========================================================
+         MODAL 3: LOG MEAL (DIET HELPER)
+         ======================================================== -->
+    <div id="diet-modal" class="paper-modal-backdrop">
+      <div class="paper-modal-sheet">
+        <div class="tape-strip top-center"></div>
+        <div class="modal-header">
+          <h3 class="handwritten-title">Log a Meal 🥗</h3>
+          <button class="modal-close-ink" id="diet-modal-close">&times;</button>
+        </div>
+        <form id="diet-form" class="paper-form">
+          <div class="paper-input-group">
+            <label for="meal-name-input">Food or Meal Name *</label>
+            <div class="field-line">
+              <input type="text" id="meal-name-input" placeholder="e.g. Avocado Toast with Poached Egg" required
+                maxlength="100">
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="paper-input-group">
+              <label for="meal-type-input">Meal Category</label>
+              <select id="meal-type-input">
+                <option value="Breakfast">🍳 Breakfast</option>
+                <option value="Lunch" selected>🥪 Lunch</option>
+                <option value="Dinner">🍲 Dinner</option>
+                <option value="Snack">🍎 Snack</option>
+              </select>
+            </div>
+
+            <div class="paper-input-group">
+              <label for="meal-cal-input">Calories (kcal) *</label>
+              <div class="field-line">
+                <input type="number" id="meal-cal-input" min="1" max="5000" placeholder="380" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="paper-input-group">
+            <label for="meal-notes-input">Portion & Nutritional Notes</label>
+            <textarea id="meal-notes-input" rows="2"
+              placeholder="e.g. 2 slices whole wheat bread, 1 avocado, 1 egg"></textarea>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="paper-btn btn-outline" id="diet-modal-cancel">Cancel</button>
+            <button type="submit" class="paper-btn stamp-btn-orange">Log to Diet Journal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Paper Toast Stamp -->
+    <div id="paper-toast" class="paper-toast"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
